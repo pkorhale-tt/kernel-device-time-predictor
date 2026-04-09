@@ -1,0 +1,515 @@
+##This comprehensive benchmark covers:
+#Size clusters: tiny, small, medium, large, huge matrices
+#Shape clusters: square, tall-skinny, short-wide, low-rank, reduction-heavy, rectangular
+#Edge cases: very small ops, non-tile-aligned dimensions, extreme aspect ratios
+#Special cases: GEMV-like, outer products, batched operations
+#Variations: different fidelities, output dtypes, buffer locations
+#Real workloads: transformer shapes, conv-like shapes, original ViT examples
+workload:
+  name: /proj_sw/user_dev/pkorhale/tt-metal/generated/profiler/reports/shape_clusters/shape_cluster_benchmark.csv
+  total_ops: 60
+  description: "Comprehensive shape clusters for performance modeling"
+  note: Covers square, tall-skinny, short-wide, low-rank, reduction-heavy, and various sizes
+ops:
+# ========== TINY SQUARE MATRICES (< 1000 total tiles) ==========
+- op_id: 1
+  description: Matmul M=32 K=32 N=32 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 32, K: 32, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 32, N: 32, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 2
+  description: Matmul M=64 K=64 N=64 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 64, K: 64, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 64, N: 64, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+# ========== SMALL SQUARE MATRICES (1K-10K tiles) ==========
+- op_id: 3
+  description: Matmul M=128 K=128 N=128 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 128, K: 128, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 128, N: 128, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 4
+  description: Matmul M=256 K=256 N=256 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 256, K: 256, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 256, N: 256, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+# ========== MEDIUM SQUARE MATRICES (10K-100K tiles) ==========
+- op_id: 5
+  description: Matmul M=512 K=512 N=512 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 512, K: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 512, N: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 6
+  description: Matmul M=768 K=768 N=768 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 768, K: 768, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 768, N: 768, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+# ========== LARGE SQUARE MATRICES (100K-1M tiles) ==========
+- op_id: 7
+  description: Matmul M=1024 K=1024 N=1024 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 1024, K: 1024, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 1024, N: 1024, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 8
+  description: Matmul M=2048 K=2048 N=2048 batch_a=4 batch_b=1
+  tensor_a: {batch: 4, M: 2048, K: 2048, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 2048, N: 2048, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+# ========== HUGE SQUARE MATRICES (>1M tiles) ==========
+- op_id: 9
+  description: Matmul M=4096 K=4096 N=4096 batch_a=2 batch_b=1
+  tensor_a: {batch: 2, M: 4096, K: 4096, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 4096, N: 4096, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+# ========== TALL SKINNY (M >> N) ==========
+- op_id: 10
+  description: Matmul M=1024 K=256 N=32 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 1024, K: 256, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 256, N: 32, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 11
+  description: Matmul M=2048 K=512 N=64 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 2048, K: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 512, N: 64, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 12
+  description: Matmul M=4096 K=768 N=128 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 4096, K: 768, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 768, N: 128, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 13
+  description: Matmul M=8192 K=1024 N=256 batch_a=4 batch_b=1
+  tensor_a: {batch: 4, M: 8192, K: 1024, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 1024, N: 256, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+# ========== SHORT WIDE (N >> M) ==========
+- op_id: 14
+  description: Matmul M=32 K=256 N=1024 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 32, K: 256, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 256, N: 1024, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 15
+  description: Matmul M=64 K=512 N=2048 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 64, K: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 512, N: 2048, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 16
+  description: Matmul M=128 K=768 N=4096 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 128, K: 768, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 768, N: 4096, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 17
+  description: Matmul M=256 K=1024 N=8192 batch_a=4 batch_b=1
+  tensor_a: {batch: 4, M: 256, K: 1024, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 1024, N: 8192, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+# ========== LOW RANK (K << M,N) ==========
+- op_id: 18
+  description: Matmul M=512 K=16 N=512 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 512, K: 16, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 16, N: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 19
+  description: Matmul M=1024 K=32 N=1024 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 1024, K: 32, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 32, N: 1024, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 20
+  description: Matmul M=2048 K=64 N=2048 batch_a=4 batch_b=1
+  tensor_a: {batch: 4, M: 2048, K: 64, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 64, N: 2048, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 21
+  description: Matmul M=4096 K=128 N=4096 batch_a=2 batch_b=1
+  tensor_a: {batch: 2, M: 4096, K: 128, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 128, N: 4096, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+# ========== REDUCTION HEAVY (K >> M,N) ==========
+- op_id: 22
+  description: Matmul M=128 K=2048 N=128 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 128, K: 2048, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 2048, N: 128, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 23
+  description: Matmul M=256 K=4096 N=256 batch_a=4 batch_b=1
+  tensor_a: {batch: 4, M: 256, K: 4096, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 4096, N: 256, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 24
+  description: Matmul M=512 K=8192 N=512 batch_a=2 batch_b=1
+  tensor_a: {batch: 2, M: 512, K: 8192, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 8192, N: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+# ========== RECTANGULAR (GENERAL CASE) ==========
+- op_id: 25
+  description: Matmul M=384 K=512 N=768 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 384, K: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 512, N: 768, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 26
+  description: Matmul M=768 K=384 N=512 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 768, K: 384, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 384, N: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 27
+  description: Matmul M=1536 K=768 N=2048 batch_a=4 batch_b=1
+  tensor_a: {batch: 4, M: 1536, K: 768, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 768, N: 2048, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+# ========== VERY SMALL OPS (edge cases) ==========
+- op_id: 28
+  description: Matmul M=1 K=512 N=512 batch_a=128 batch_b=1
+  tensor_a: {batch: 128, M: 1, K: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 512, N: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 29
+  description: Matmul M=512 K=512 N=1 batch_a=128 batch_b=1
+  tensor_a: {batch: 128, M: 512, K: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 512, N: 1, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 30
+  description: Matmul M=16 K=16 N=16 batch_a=512 batch_b=1
+  tensor_a: {batch: 512, M: 16, K: 16, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 16, N: 16, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+# ========== BATCHED OPERATIONS ==========
+- op_id: 31
+  description: Matmul M=64 K=64 N=64 batch_a=96 batch_b=96
+  tensor_a: {batch: 96, M: 64, K: 64, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 96, K: 64, N: 64, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: true}
+
+- op_id: 32
+  description: Matmul M=128 K=128 N=128 batch_a=48 batch_b=48
+  tensor_a: {batch: 48, M: 128, K: 128, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 48, K: 128, N: 128, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: true}
+
+- op_id: 33
+  description: Matmul M=256 K=256 N=256 batch_a=24 batch_b=24
+  tensor_a: {batch: 24, M: 256, K: 256, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 24, K: 256, N: 256, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: true}
+
+# ========== ORIGINAL VIT SHAPES (from input) ==========
+- op_id: 34
+  description: Matmul M=14 K=1024 N=768 batch_a=112 batch_b=1
+  tensor_a: {batch: 112, M: 14, K: 1024, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 1024, N: 768, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 35
+  description: Matmul M=224 K=768 N=768 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 224, K: 768, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 768, N: 768, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 36
+  description: Matmul M=197 K=768 N=3072 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 197, K: 768, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 768, N: 3072, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 37
+  description: Matmul M=197 K=3072 N=768 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 197, K: 3072, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 3072, N: 768, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+# ========== DIFFERENT FIDELITIES ==========
+- op_id: 38
+  description: Matmul M=512 K=512 N=512 batch_a=8 batch_b=1 LoFi
+  tensor_a: {batch: 8, M: 512, K: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 512, N: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: LoFi, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 39
+  description: Matmul M=512 K=512 N=512 batch_a=8 batch_b=1 HiFi3
+  tensor_a: {batch: 8, M: 512, K: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 512, N: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi3, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 40
+  description: Matmul M=512 K=512 N=512 batch_a=8 batch_b=1 HiFi4
+  tensor_a: {batch: 8, M: 512, K: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 512, N: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi4, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+# ========== DIFFERENT OUTPUT DTYPES ==========
+- op_id: 41
+  description: Matmul M=512 K=512 N=512 batch_a=8 batch_b=1 BFLOAT8_B output
+  tensor_a: {batch: 8, M: 512, K: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 512, N: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT8_B, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+# ========== L1 OUTPUT BUFFER ==========
+- op_id: 42
+  description: Matmul M=256 K=256 N=256 batch_a=8 batch_b=1 L1 output
+  tensor_a: {batch: 8, M: 256, K: 256, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 256, N: 256, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: L1}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+# ========== EDGE CASE: NON-TILE-ALIGNED ==========
+- op_id: 43
+  description: Matmul M=13 K=17 N=19 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 13, K: 17, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 17, N: 19, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 44
+  description: Matmul M=100 K=200 N=300 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 100, K: 200, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 200, N: 300, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+# ========== TRANSFORMER TYPICAL SHAPES ==========
+- op_id: 45
+  description: Matmul M=512 K=512 N=2048 batch_a=16 batch_b=1 (FFN)
+  tensor_a: {batch: 16, M: 512, K: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 512, N: 2048, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 46
+  description: Matmul M=512 K=2048 N=512 batch_a=16 batch_b=1 (FFN back)
+  tensor_a: {batch: 16, M: 512, K: 2048, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 2048, N: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 47
+  description: Matmul M=512 K=512 N=1536 batch_a=16 batch_b=1 (QKV projection)
+  tensor_a: {batch: 16, M: 512, K: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 512, N: 1536, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 48
+  description: Matmul M=512 K=64 N=512 batch_a=128 batch_b=128 (attention)
+  tensor_a: {batch: 128, M: 512, K: 64, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 128, K: 64, N: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: true}
+
+# ========== CONV-LIKE SHAPES ==========
+- op_id: 49
+  description: Matmul M=49 K=512 N=512 batch_a=64 batch_b=1 (7x7 conv)
+  tensor_a: {batch: 64, M: 49, K: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 512, N: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 50
+  description: Matmul M=3136 K=64 N=64 batch_a=32 batch_b=1 (56x56 conv)
+  tensor_a: {batch: 32, M: 3136, K: 64, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 64, N: 64, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 51
+  description: Matmul M=784 K=128 N=256 batch_a=32 batch_b=1 (28x28 conv)
+  tensor_a: {batch: 32, M: 784, K: 128, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 128, N: 256, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 52
+  description: Matmul M=196 K=256 N=512 batch_a=32 batch_b=1 (14x14 conv)
+  tensor_a: {batch: 32, M: 196, K: 256, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 256, N: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+# ========== GEMV-LIKE (M=1 or N=1) ==========
+- op_id: 53
+  description: Matmul M=1 K=4096 N=4096 batch_a=32 batch_b=1
+  tensor_a: {batch: 32, M: 1, K: 4096, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 4096, N: 4096, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 54
+  description: Matmul M=4096 K=4096 N=1 batch_a=32 batch_b=1
+  tensor_a: {batch: 32, M: 4096, K: 4096, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 4096, N: 1, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+# ========== OUTER PRODUCT (K=1) ==========
+- op_id: 55
+  description: Matmul M=1024 K=1 N=1024 batch_a=16 batch_b=1
+  tensor_a: {batch: 16, M: 1024, K: 1, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 1, N: 1024, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+# ========== EXTREME ASPECT RATIOS ==========
+- op_id: 56
+  description: Matmul M=16384 K=128 N=32 batch_a=4 batch_b=1
+  tensor_a: {batch: 4, M: 16384, K: 128, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 128, N: 32, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 57
+  description: Matmul M=32 K=128 N=16384 batch_a=4 batch_b=1
+  tensor_a: {batch: 4, M: 32, K: 128, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 128, N: 16384, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 58
+  description: Matmul M=128 K=16384 N=128 batch_a=2 batch_b=1
+  tensor_a: {batch: 2, M: 128, K: 16384, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 16384, N: 128, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+# ========== POWER OF 2 SWEEPS ==========
+- op_id: 59
+  description: Matmul M=2048 K=1024 N=512 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 2048, K: 1024, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 1024, N: 512, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
+
+- op_id: 60
+  description: Matmul M=512 K=1024 N=2048 batch_a=8 batch_b=1
+  tensor_a: {batch: 8, M: 512, K: 1024, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  tensor_b: {batch: 1, K: 1024, N: 2048, dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM, transpose: false}
+  output: {dtype: BFLOAT16, memory_layout: INTERLEAVED, buffer_type: DRAM}
+  compute: {math_fidelity: HiFi2, fp32_dest_acc_en: false, packer_l1_acc: true, math_approx_mode: false}
+  flags: {user_run_batched: false}
